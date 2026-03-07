@@ -42,13 +42,11 @@ def menu_items(request):
         if ordering:
             ordering_fields = ordering.split(",")
             items = items.order_by(*ordering_fields)
-        
         paginator = Paginator(items,per_page=perpage)
         try:
             items = paginator.page(number=page)
         except EmptyPage:
             items = []
-        
         serialized_item = MenuItemSerializer(items, many=True)
         return Response(serialized_item.data)
     elif request.method == 'POST':
@@ -56,7 +54,6 @@ def menu_items(request):
         serialized_item.is_valid(raise_exception = True)
         serialized_item.save()
         return Response(serialized_item.validated_data, status.HTTP_201_CREATED)
-    
 
 @api_view()
 def single_item(request, id):
